@@ -1,6 +1,6 @@
 debug: false
 server:
-  port: 18020
+  port: 18088
 spring:
   redis:
     cluster:
@@ -10,14 +10,14 @@ spring:
 #    consul:
 #      host: ${public.spring.cloud.consul.host}
 #      port: ${public.spring.cloud.consul.port}
-#    discovery:
-#      register: true
-#      serviceName: ${spring.application.name}
-#      healthCheckPath: /actuator/health
-#      healthCheckInterval: 30s
-#      tags: urlprefix-/${spring.application.name}
-#      instanceId: ${spring.application.name}196
-#      prefer-ip-address: true
+#      discovery:
+#        register: true
+#        serviceName: ${spring.application.name}
+#        healthCheckPath: /actuator/health
+#        healthCheckInterval: 30s
+#        tags: urlprefix-/${spring.application.name}
+#        instanceId: ${spring.application.name}:${server.port}
+#        prefer-ip-address: true
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
     url: jdbc:mysql://${public.spring.datasource.url}/my_project?useUnicode=yes&characterEncoding=UTF-8&serverTimezone=Asia/Shanghai&allowMultiQueries=true

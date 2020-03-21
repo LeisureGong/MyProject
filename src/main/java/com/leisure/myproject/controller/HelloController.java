@@ -14,7 +14,7 @@ public class HelloController {
 
 	@ApiOperation(value = "你好呀")
 	@GetMapping("/addHello")
-	public void addHello(){
-		System.out.println("你好哈好啊好哦嗷嗷哈后!");
+	public String addHello(){
+		return "你好你好你好你好你好";
 	}
 }

@@ -10,7 +10,7 @@ import javax.annotation.PostConstruct;
 import java.util.TimeZone;
 
 @SpringBootApplication
-@EnableDiscoveryClient
+//@EnableDiscoveryClient
 @MapperScan(value = "com.leisure.myproject.dao",annotationClass = Repository.class)
 public class MyProjectApplication {
 
