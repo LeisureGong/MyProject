@@ -1,0 +1,38 @@
+spring:
+  profiles:
+    active:dev,common
+  datasource:
+    driver-class-name: com.
+  application:
+    name:my-project
+  devtools:
+    restart:
+      #热部署生效
+      enabled:true
+      #设置重启的目录
+      additional-paths:resources
+
+#日志
+logging:
+  # config:classpath:logback.xml
+  #对业务类的dao也会打印DEBUG日志，方便观察mybatis查到了多少数据
+  level:
+    org.eclipse.paho.client.mqttv3.**: error
+    org.dozer.**: error
+    org.mybatis.**: error
+
+mybatis:
+  mapper-locations:
+    - classpath*:/mapper/**/*.xml
+  config-location: classpath:mybatis-config.xml
+
+
+#pagehelper
+pagehelper:
+  helperDialect: mysql
+  reasonable: true
+  supportMethodsArguments: true
+  params: count=countSql
+  pageSizeZero: true
+  rowBoundsWithCount: true
+  offsetAsPageNum: true

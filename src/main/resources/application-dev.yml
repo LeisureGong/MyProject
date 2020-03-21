@@ -1,0 +1,9 @@
+debug:false
+server:
+  port:9020
+spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://${public.spring.datasource.url.host}/my_project?useUnicode=yes&characterEncoding=UTF-8&serverTimezone=Asia/Shanghai&allowMultiQueries=true
+    username: ${public.spring.datasource.username.host}
+    password: ${public.spring.datasource.password.host}
