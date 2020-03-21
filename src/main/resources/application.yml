@@ -1,16 +1,16 @@
 spring:
   profiles:
-    active:dev,common
+    active: dev,common
   datasource:
-    driver-class-name: com.
+    driver-class-name: com.mysql.cj.jdbc.Driver
   application:
     name:my-project
   devtools:
     restart:
       #热部署生效
-      enabled:true
-      #设置重启的目录
-      additional-paths:resources
+      enabled: true
+      #设置重启的目录，检索目录(resources/static、resources/templates)
+      additional-paths: resources
 
 #日志
 logging:

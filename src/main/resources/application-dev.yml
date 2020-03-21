@@ -1,9 +1,25 @@
-debug:false
+debug: false
 server:
-  port:9020
+  port: 18020
 spring:
+  redis:
+    cluster:
+      nodes: ${public.spring.redis.cluster.nodes}
+
+#  cloud:
+#    consul:
+#      host: ${public.spring.cloud.consul.host}
+#      port: ${public.spring.cloud.consul.port}
+#    discovery:
+#      register: true
+#      serviceName: ${spring.application.name}
+#      healthCheckPath: /actuator/health
+#      healthCheckInterval: 30s
+#      tags: urlprefix-/${spring.application.name}
+#      instanceId: ${spring.application.name}196
+#      prefer-ip-address: true
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://${public.spring.datasource.url.host}/my_project?useUnicode=yes&characterEncoding=UTF-8&serverTimezone=Asia/Shanghai&allowMultiQueries=true
-    username: ${public.spring.datasource.username.host}
-    password: ${public.spring.datasource.password.host}
+    url: jdbc:mysql://${public.spring.datasource.url}/my_project?useUnicode=yes&characterEncoding=UTF-8&serverTimezone=Asia/Shanghai&allowMultiQueries=true
+    username: ${public.spring.datasource.username}
+    password: ${public.spring.datasource.password}
