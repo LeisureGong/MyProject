@@ -26,6 +26,11 @@ mybatis:
     - classpath*:/mapper/**/*.xml
   config-location: classpath:mybatis-config.xml
 
+#mapper
+mapper:
+  not-empty: false
+  identity: MYSQL
+
 
 #pagehelper
 pagehelper:

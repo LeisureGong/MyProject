@@ -20,6 +20,6 @@ spring:
 #        prefer-ip-address: true
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://${public.spring.datasource.url}/my_project?useUnicode=yes&characterEncoding=UTF-8&serverTimezone=Asia/Shanghai&allowMultiQueries=true
+    url: jdbc:mysql://${public.spring.datasource.url}/my_project?characterEncoding=UTF-8&useSSL=false&allowMultiQueries=true
     username: ${public.spring.datasource.username}
     password: ${public.spring.datasource.password}
