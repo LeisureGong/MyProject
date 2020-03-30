@@ -8,7 +8,7 @@ import com.leisure.myproject.entity.Club;
 import sun.awt.windows.WBufferStrategy;
 
 /**
- *
+ * 序列化
  * @author gonglei
  * @date 2020/3/30 15:58
  */
