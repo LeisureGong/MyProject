@@ -62,6 +62,11 @@ public class SiteManageServiceImpl implements SiteManageService {
 		return siteInfoEntityList;
 	}
 
+	public boolean redisTest(){
+
+
+		return true;
+	}
 
 
 }
