@@ -15,8 +15,7 @@ public class Test {
 
 	public static void main(String... args){
 		String key = "Club:1";
-		Club result = deSerializeRedis(key);
-		System.out.println(result);
+		operateJedis();
 	}
 
 	public boolean serializeRedis(String key){
@@ -35,5 +34,29 @@ public class Test {
 		byte[] resultBytes = jedis.get(key.getBytes());
 		Club resultClub = ps.deserialize(resultBytes);
 		return resultClub;
+	}
+
+	public static void operateJedis(){
+
+		Jedis jedis = new Jedis("47.98.192.149",6379);
+		//string
+		jedis.incr("counter");
+		//hash
+		jedis.hset("myhash","f1","v1");
+		jedis.hset("myhash","f2","v2");
+		//list
+		jedis.rpush("mylist","1");
+		jedis.rpush("mylist","2");
+		jedis.rpush("mylist","3");
+		jedis.lpush("mylist","4");
+		//set
+		jedis.sadd("myset","a");
+		jedis.sadd("myset","b");
+		jedis.sadd("myset","c");
+		//zset
+		jedis.zadd("myzset",99,"tom");
+		jedis.zadd("myzset",33,"james");
+		jedis.zadd("myzset",66,"peter");
+
 	}
 }
