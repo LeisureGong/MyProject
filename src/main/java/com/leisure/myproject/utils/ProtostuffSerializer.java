@@ -5,10 +5,10 @@ import com.dyuproject.protostuff.ProtostuffIOUtil;
 import com.dyuproject.protostuff.Schema;
 import com.dyuproject.protostuff.runtime.RuntimeSchema;
 import com.leisure.myproject.entity.Club;
-import sun.awt.windows.WBufferStrategy;
 
 /**
- * 序列化
+ * 序列化与反序列化
+ * 把Java对象转义成有序字节流对象
  * @author gonglei
  * @date 2020/3/30 15:58
  */
