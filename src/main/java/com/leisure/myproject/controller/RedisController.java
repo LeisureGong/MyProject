@@ -2,20 +2,41 @@ package com.leisure.myproject.controller;
 
 import com.leisure.myproject.entity.Club;
 import com.leisure.myproject.utils.ProtostuffSerializer;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.stereotype.Component;
 import redis.clients.jedis.Jedis;
+import redis.clients.jedis.Pipeline;
 
-import java.util.Arrays;
 import java.util.Date;
+import java.util.List;
 
 /**
  * @author gonglei
  * @date 2020/3/30 16:08
  */
-public class Test {
+@Component
+public class RedisController {
 
-	public static void main(String... args){
-		String key = "Club:1";
-		operateJedis();
+	/**
+	* 如果new RedisController，Value是不能自动注入的(autowired)
+	 * spring不能管理new出来的对象
+	*/
+	@Value("${public.redis.host}")
+	private String redisHost;
+
+	@Value("${public.redis.host.port}")
+	private String redisPort;
+
+	public boolean mainRedis(String... args){
+		Jedis jedis = new Jedis("47.98.192.149",6379);
+		Pipeline pipeline = jedis.pipelined();
+		pipeline.set("hello","redisworldworld");
+		pipeline.incr("counter");
+		List<Object> resultList = pipeline.syncAndReturnAll();
+		System.out.println("hkojadsfhkjolafdshkjl");
+		jedis.close();
+		return true;
 	}
 
 	public boolean serializeRedis(String key){
@@ -36,9 +57,9 @@ public class Test {
 		return resultClub;
 	}
 
-	public static void operateJedis(){
+	public void operateJedis(){
 
-		Jedis jedis = new Jedis("47.98.192.149",6379);
+		Jedis jedis = new Jedis(redisHost,Integer.parseInt(redisPort));
 		//string
 		jedis.incr("counter");
 		//hash
