@@ -20,7 +20,7 @@ public class RedisController {
 
 	/**
 	* 如果new RedisController，Value是不能自动注入的(autowired)
-	 * spring不能管理new出来的对象
+	 * 	 * spring不能管理new出来的对象
 	*/
 	@Value("${public.redis.host}")
 	private String redisHost;
