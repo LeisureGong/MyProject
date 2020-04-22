@@ -3,7 +3,6 @@ package com.leisure.myproject.controller;
 import com.leisure.myproject.entity.Club;
 import com.leisure.myproject.utils.ProtostuffSerializer;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.Configuration;
 import org.springframework.stereotype.Component;
 import redis.clients.jedis.Jedis;
 import redis.clients.jedis.Pipeline;

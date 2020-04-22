@@ -67,6 +67,13 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-data-redis</artifactId>
+            <exclusions>
+                <!--不依赖Redis的异步客户端lettuce-->
+                <exclusion>
+                    <groupId>io.lettuce</groupId>
+                    <artifactId>lettuce-core</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
         <!--Kafka-->
         <dependency>
@@ -127,7 +134,7 @@
             <optional>true</optional>
         </dependency>
 
-        <!--配置Jedis-->
+        <!--引入Redis的客户端驱动jedis-->
         <dependency>
             <groupId>redis.clients</groupId>
             <artifactId>jedis</artifactId>
