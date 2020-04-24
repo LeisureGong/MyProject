@@ -1,7 +1,6 @@
 package com.leisure.myproject.service.impl;
 
 
-import cn.hutool.core.bean.BeanUtil;
 import com.leisure.myproject.dao.SiteManageDAO;
 import com.leisure.myproject.dto.SiteInfoDTO;
 import com.leisure.myproject.dto.SiteQueryReqDTO;
@@ -9,7 +8,6 @@ import com.leisure.myproject.entity.SiteInfoEntity;
 import com.leisure.myproject.service.SiteManageService;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang.StringUtils;
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

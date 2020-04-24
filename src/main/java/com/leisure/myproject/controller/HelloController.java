@@ -3,6 +3,7 @@ package com.leisure.myproject.controller;
 
 import com.leisure.myproject.dto.SiteQueryReqDTO;
 import com.leisure.myproject.entity.SiteInfoEntity;
+import com.leisure.myproject.message.HelloSender;
 import com.leisure.myproject.service.SiteManageService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -23,6 +24,9 @@ public class HelloController {
 	@Autowired
 	SiteManageService siteManageService;
 
+	@Autowired
+	private HelloSender helloSender;
+
 	@ApiOperation(value = "你好呀")
 	@GetMapping("/addHello")
 	public String addHello(){
@@ -33,5 +37,11 @@ public class HelloController {
 	@PostMapping("/querySite")
 	public List<SiteInfoEntity> querySite(@RequestBody SiteQueryReqDTO siteQueryReqDTO){
 		return(siteManageService.querySite(siteQueryReqDTO));
+	}
+
+	@ApiOperation("测试消息推送")
+	@GetMapping("/rabbitPush")
+	public void rabbit() throws Exception{
+		helloSender.send();
 	}
 }
