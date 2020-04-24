@@ -18,12 +18,16 @@ spring:
 #      nodes: ${public.spring.redis.cluster.nodes}
 
 
-  #配置rabbitMq 服务器
+#配置rabbitMq 服务器
   rabbitmq:
     host: ${public.spring.rabbitmq.host}
     port: ${public.spring.rabbitmq.port}
     username: ${public.spring.rabbitmq.username}
     password: ${public.spring.rabbitmq.password}
+
+#配置fastdfs
+
+
 
 #  cloud:
 #    consul:

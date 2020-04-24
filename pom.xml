@@ -175,7 +175,12 @@
             <artifactId>guava</artifactId>
             <version>20.0</version>
         </dependency>
-
+        <!--FastDFS-->
+        <dependency>
+            <groupId>org.csource</groupId>
+            <artifactId>fastdfs-client-java</artifactId>
+            <version>1.27-SNAPSHOT</version>
+        </dependency>
     </dependencies>
 
     <build>
