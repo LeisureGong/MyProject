@@ -177,9 +177,9 @@
         </dependency>
         <!--FastDFS-->
         <dependency>
-            <groupId>org.csource</groupId>
-            <artifactId>fastdfs-client-java</artifactId>
-            <version>1.27-SNAPSHOT</version>
+            <groupId>com.github.tobato</groupId>
+            <artifactId>fastdfs-client</artifactId>
+            <version>1.26.6</version>
         </dependency>
     </dependencies>
 
