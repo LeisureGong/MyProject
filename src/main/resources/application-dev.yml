@@ -25,7 +25,30 @@ spring:
     username: ${public.spring.rabbitmq.username}
     password: ${public.spring.rabbitmq.password}
 
-#配置fastdfs
+  # ===================================================================
+  # 分布式文件系统FDFS配置
+  # ===================================================================
+  fdfs:
+    so-timeout: 1500
+    connect-timeout: 600
+    #缩略图生成参数
+    thumb-image:
+      width: 150
+      height: 150
+    #TrackerList参数，支持多个
+    tracker-list: ${public.spring.tracker.server}
+
+    pool:
+      #从池中借出的对象的最大数目(配置为-1表示不限制)
+      max-total: -1
+      #获取连接时的最大等待毫秒数(默认配置为5s)
+      max-wait-millis: 5*1000
+      #每个key最大连接数
+      max-total-per-key: 50
+      #每个key对应的连接池最大空闲连接数
+      max-idle-per-key: 10
+      #每个key对应的连接池最小空闲连接数
+      max_idle_per_key: 5
 
 
 
