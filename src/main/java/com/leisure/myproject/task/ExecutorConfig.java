@@ -25,13 +25,18 @@ public class ExecutorConfig {
 	/** Set the capacity for the ThreadPoolExecutor's BlockingQueue.*/
 	private int queueCapacity = 200;
 
+	// 允许线程空闲时间
+	private int keepAliveSeconds = 60;
+
 	@Bean
 	public Executor mySimpleAsync() {
 		ThreadPoolTaskExecutor executor = new ThreadPoolTaskExecutor();
 		executor.setCorePoolSize(corePoolSize);
 		executor.setMaxPoolSize(maxPoolSize);
 		executor.setQueueCapacity(queueCapacity);
-		executor.setThreadNamePrefix("MySimpleExecutor - ");
+		executor.setKeepAliveSeconds(keepAliveSeconds);
+		// 线程池名前缀
+		executor.setThreadNamePrefix("MySimpleExecutor-");
 		executor.initialize();
 		return executor;
 	}
