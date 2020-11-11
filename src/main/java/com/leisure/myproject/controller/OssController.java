@@ -1,11 +1,13 @@
 package com.leisure.myproject.controller;
 
 
+import com.leisure.myproject.oss.OSSUtil;
 import com.leisure.myproject.oss.ObjectStorageService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -25,4 +27,11 @@ public class OssController {
     public String upload(@RequestParam(value = "file") MultipartFile uploadFile) throws Exception {
         return objectStorageService.uploadSingleFile(uploadFile);
     }
+
+    @ApiOperation("删除文件")
+    @GetMapping(value = "/delete")
+    public boolean delete(@RequestParam(value = "url") String url) {
+        return OSSUtil.delete(url);
+    }
+
 }

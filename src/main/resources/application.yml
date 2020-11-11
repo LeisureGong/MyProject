@@ -49,3 +49,4 @@ oss:
   accessKeyId: LTAI4GK4GoHZt2ZRyhh6dsKu
   accessKeySecret: DWvRWCFJM99j31uR2fS1dxGBHqihTI
   bucketName: enc-env-test
+  expiration: 100
