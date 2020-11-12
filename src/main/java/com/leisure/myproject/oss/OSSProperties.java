@@ -28,7 +28,7 @@ public class OSSProperties {
         OSSUtil.initConfig(this);
     }
 
-    // 过期时间
+    // 过期
     private int expiration;
 
     @Override

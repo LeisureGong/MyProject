@@ -37,7 +37,6 @@ public class OssFileUtils {
             log.error("单个文件上传失败，文件为空");
             return null;
         }
-
         try {
             // bucket key
             String key = OSSUtil.generateKey(file.getOriginalFilename());
@@ -47,6 +46,32 @@ public class OssFileUtils {
         }
         return null;
     }
+
+    /**
+     * 上传视频
+     * @param
+     * @return
+     * @date 2020/11/6
+     */
+    public static String uploadVideoFile(String vodUrl) {
+        if (StringUtils.isBlank(vodUrl)) {
+            log.error("上传视频失败，文件为空");
+            return null;
+        }
+
+        try {
+            // bucket key
+            String key = vodUrl.substring(vodUrl.lastIndexOf("/") + 1);
+            return OSSUtil.uploadVideo(key,vodUrl);
+        } catch (Exception e) {
+            log.error("单个文件上传异常：{}", e.getMessage());
+        }
+        return null;
+    }
+
+
+
+
 
 
     /**

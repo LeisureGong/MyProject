@@ -1,23 +1,34 @@
 package com.leisure.myproject.oss;
 
+import com.alibaba.fastjson.JSONObject;
+import com.aliyun.oss.ClientException;
 import com.aliyun.oss.OSS;
 import com.aliyun.oss.OSSClient;
 import com.aliyun.oss.OSSClientBuilder;
 import com.aliyun.oss.model.GetObjectRequest;
 import com.aliyun.oss.model.OSSObject;
+import com.aliyun.vod.upload.impl.UploadVideoImpl;
+import com.aliyun.vod.upload.req.UploadStreamRequest;
+import com.aliyun.vod.upload.resp.UploadStreamResponse;
+import com.aliyuncs.DefaultAcsClient;
+import com.aliyuncs.profile.DefaultProfile;
+import com.aliyuncs.vod.model.v20170321.CreateUploadVideoRequest;
+import com.aliyuncs.vod.model.v20170321.CreateUploadVideoResponse;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.time.DateFormatUtils;
 import org.apache.commons.lang.time.DateUtils;
+import org.springframework.web.multipart.MultipartFile;
 
-import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletResponse;
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.URLEncoder;
 import java.util.Date;
 import java.util.Random;
@@ -232,6 +243,7 @@ public class OSSUtil {
     public static File download2Dir(String url, String dir) {
         if (url.contains(ossProperties.getBucket())) {
             // 根据url获取对象名称
+            url = getObjectNameByUrl(url);
         }
         OSS ossClient = new OSSClientBuilder().build(ossProperties.getEndpoint(), ossProperties.getAccessKeyId(), ossProperties.getAccessKeySecret());
         try {
@@ -315,5 +327,130 @@ public class OSSUtil {
                  }
              }
          }
+
      }
+
+    public static String uploadVod(MultipartFile file){
+         try {
+             String id = ossProperties.getAccessKeyId();
+             String screct = ossProperties.getAccessKeySecret();
+             // 本地文件的路径和名称
+             String fileName = file.getOriginalFilename();
+             // 上传到阿里云的显示标题
+             String title = fileName.substring(0,fileName.lastIndexOf("."));
+             InputStream inputStream= file.getInputStream();
+             String videoId = testUploadVideo(id,screct,title,fileName,inputStream);
+            log.info("videoId={}", videoId);
+         } catch (Exception e) {
+
+         }
+        return null;
+    }
+
+    public static String testUploadVideo(String accessKeyId, String accessKeySecret, String title, String fileName, InputStream inputStream) {
+        UploadStreamRequest request = new UploadStreamRequest(accessKeyId, accessKeySecret, title, fileName, inputStream);
+        UploadVideoImpl uploader = new UploadVideoImpl();
+        UploadStreamResponse response = uploader.uploadStream(request);
+        String videoId = null;
+        if (response.isSuccess()) {
+            log.info("VideoId=" + response.getVideoId() + "\n");
+            videoId = response.getVideoId();
+        } else { //如果设置回调URL无效，不影响视频上传，可以返回VideoId同时会返回错误码。其他情况上传失败时，VideoId为空，此时需要根据返回错误码分析具体错误原因
+            log.error("VideoId=" + response.getVideoId() + "\n");
+            videoId = response.getVideoId();
+        }
+        return videoId;
+    }
+
+     /**
+      * 上传视频文件到阿里云OSS
+      * @param key OSS文件存储名
+      * @param url 视频文件路径
+      * @return
+      * @date 2020/11/12
+      */
+     public static String uploadVideo(String key, String url) {
+
+         try {
+             DefaultAcsClient vodClient = initVodClient();
+             CreateUploadVideoResponse createUploadVideoResponse = createUploadVideo(vodClient);
+
+             // 执行成功会返回VideoId、UploadAddress和UploadAuth
+             String videoId = createUploadVideoResponse.getVideoId();
+
+
+             JSONObject uploadAuth = JSONObject.parseObject(decodeBase64(createUploadVideoResponse.getUploadAuth()));
+             JSONObject uploadAddress = JSONObject.parseObject(decodeBase64(createUploadVideoResponse.getUploadAddress()));
+
+             // 使用UploadAuth和UploadAddress初始化OSS客户端
+             OSSClient ossClient = initOssClient(uploadAuth, uploadAddress);
+             // 上传文件，注意是同步上传会阻塞等待，耗时与文件大小和网络上行带宽有关
+             uploadLocalFile(ossClient, uploadAddress, url);
+             log.info("上传视频成功：{}", videoId);
+             return videoId;
+
+         } catch (Exception e) {
+             log.error("");
+         }
+        return null;
+     }
+
+    public static void uploadLocalFile(OSSClient ossClient, JSONObject uploadAddress, String localFile) {
+        String bucketName = uploadAddress.getString("Bucket");
+        String objectName = uploadAddress.getString("FileName");
+        File file = new File(localFile);
+        ossClient.putObject(bucketName, objectName, file);
+    }
+
+     // 初始化VOD客户端
+     public static DefaultAcsClient initVodClient() throws ClientException {
+         // 点播服务接入区域，国内请填cn-shanghai，其他区域请参考文档 https://help.aliyun.com/document_detail/98194.html
+         String regionId = "cn-shanghai";
+         DefaultProfile profile = DefaultProfile.getProfile(regionId, ossProperties.getAccessKeyId(), ossProperties.getAccessKeySecret());
+         DefaultAcsClient client = new DefaultAcsClient(profile);
+         return client;
+     }
+
+    public static CreateUploadVideoResponse createUploadVideo(DefaultAcsClient vodClient) throws com.aliyuncs.exceptions.ClientException {
+        CreateUploadVideoRequest request = new CreateUploadVideoRequest();
+        request.setFileName("vod_test.mp4");
+        request.setTitle("this is title");
+        //request.setDescription("this is desc");
+        //request.setTags("tag1,tag2");
+        //request.setCoverURL("http://vod.aliyun.com/test_cover_url.jpg");
+        //request.setCateId(-1L);
+        //request.setTemplateGroupId("");
+        //request.setWorkflowId("");
+        //request.setStorageLocation("");
+        //request.setAppId("app-1000000");
+
+        //设置请求超时时间
+        request.setSysReadTimeout(1000);
+        request.setSysConnectTimeout(1000);
+        return vodClient.getAcsResponse(request);
+    }
+
+    public static OSSClient initOssClient(JSONObject uploadAuth, JSONObject uploadAddress) {
+        String endpoint = uploadAddress.getString("Endpoint");
+        String accessKeyId = uploadAuth.getString("AccessKeyId");
+        String accessKeySecret = uploadAuth.getString("AccessKeySecret");
+        String securityToken = uploadAuth.getString("SecurityToken");
+        return (OSSClient) new OSSClientBuilder().build(endpoint, accessKeyId, accessKeySecret, securityToken);
+    }
+
+    public static String decodeBase64(String s) {
+        byte[] b = null;
+        String result = null;
+        if (s != null) {
+            Base64 decoder = new Base64();
+            try {
+                b = decoder.decode(s);
+                result = new String(b, "utf-8");
+            } catch (Exception e) {
+            }
+        }
+        return result;
+    }
+
+
 }
