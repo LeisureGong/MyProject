@@ -125,6 +125,8 @@ public class OSSUtil {
          return null;
      }
 
+
+
      /**
       * 删除文件
       * @param url 待删除对象的url
@@ -171,6 +173,31 @@ public class OSSUtil {
      }
 
      /**
+      * 判断url是否存在
+      * @param url 阿里云OSS文件存储链接
+      * @return
+      * @date 2020/11/12
+      */
+     public static boolean isUrlExists(String url) {
+         if (StringUtils.isBlank(url)) {
+             log.error("文件url不能为空");
+         }
+         if (url.contains(ossProperties.getBucket())) {
+             // 获取OSS文件名(key)
+             url = getObjectNameByUrl(url);
+         }
+         boolean found = true;
+         OSS ossClient = new OSSClientBuilder()
+                 .build(ossProperties.getEndpoint(), ossProperties.getAccessKeyId(), ossProperties.getAccessKeySecret());
+         try {
+             found = ossClient.doesObjectExist(ossProperties.getBucketName(), url);
+         } catch (Exception e) {
+             log.error("查询url是否存在异常");
+         }
+         return found;
+     }
+
+     /**
       * 下载OSS对象到本地文件
       * @param url 待下载对象url
       * @param filePath
@@ -195,6 +222,32 @@ public class OSSUtil {
          return null;
      }
 
+    /**
+     * 下载文件到指定目录， 文件名称为OSS对象名称
+     * @param url 待下载对象url
+     * @param dir 下载到本地目录
+     * @return
+     * @date 2020/11/12
+     */
+    public static File download2Dir(String url, String dir) {
+        if (url.contains(ossProperties.getBucket())) {
+            // 根据url获取对象名称
+        }
+        OSS ossClient = new OSSClientBuilder().build(ossProperties.getEndpoint(), ossProperties.getAccessKeyId(), ossProperties.getAccessKeySecret());
+        try {
+            File file = new File(dir + File.separator + url);
+            // 如果指定的本地文件存在则会被覆盖，不存在则新建
+            ossClient.getObject(new GetObjectRequest(ossProperties.getBucketName(), url), file);
+            log.info("阿里云OSS下载文件结束:{}",url);
+            return file;
+        } catch (Exception e) {
+            log.error("阿里云下载文件异常：{}", e.getMessage());
+        } finally {
+            ossClient.shutdown();
+        }
+        return null;
+    }
+
 
      /**
       * 通过对象url获取对象名称
@@ -206,12 +259,12 @@ public class OSSUtil {
          if (StringUtils.isBlank(url)) {
              return null;
          }
-         return url.substring(url.indexOf(ossProperties.getBucketName()) + ossProperties.getBucketName().length() + 1, url.indexOf("?"));
+         return url.substring(url.indexOf(ossProperties.getBucket()) + ossProperties.getBucket().length() + 1, url.indexOf("?"));
      }
 
      /**
       * 调用浏览器下载
-      * @param
+      * @para
       * @return
       * @date 2020/11/10
       */

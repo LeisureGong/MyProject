@@ -34,4 +34,11 @@ public class OssController {
         return OSSUtil.delete(url);
     }
 
+    @ApiOperation("查询url是否存在")
+    @GetMapping(value = "urlExists")
+    public boolean isUrlExists(@RequestParam(value = "url") String url) {
+        boolean flag = OSSUtil.isUrlExists(url);
+        return flag;
+    }
+
 }

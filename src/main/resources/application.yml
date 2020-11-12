@@ -50,3 +50,4 @@ oss:
   accessKeySecret: DWvRWCFJM99j31uR2fS1dxGBHqihTI
   bucketName: enc-env-test
   expiration: 100
+  bucket: http://enc-env-test.oss-cn-shanghai.aliyuncs.com
