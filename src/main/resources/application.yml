@@ -11,6 +11,13 @@ spring:
       enabled: true
       #设置重启的目录，检索目录(resources/static、resources/templates)
       additional-paths: resources
+  servlet:
+    multipart:
+      maxFileSize: 50MB
+      maxRequestSize: 50MB
+#      resolve-lazily: true
+#      max-swallow-size: 100MB
+
 
 #日志
 logging:
@@ -45,9 +52,11 @@ pagehelper:
 
 #OSS对象存储配置
 oss:
-  endpoint: http://oss-cn-shanghai.aliyuncs.com
+  endpoint: https://oss-cn-shanghai.aliyuncs.com
   accessKeyId: LTAI4GK4GoHZt2ZRyhh6dsKu
   accessKeySecret: DWvRWCFJM99j31uR2fS1dxGBHqihTI
   bucketName: enc-env-test
   expiration: 100
-  bucket: http://enc-env-test.oss-cn-shanghai.aliyuncs.com
+  bucket: https://enc-env-test.oss-cn-shanghai.aliyuncs.com
+
+
