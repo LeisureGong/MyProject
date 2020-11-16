@@ -52,11 +52,11 @@ pagehelper:
 
 #OSS对象存储配置
 oss:
-  endpoint: https://oss-cn-shanghai.aliyuncs.com
-  accessKeyId: LTAI4GK4GoHZt2ZRyhh6dsKu
-  accessKeySecret: DWvRWCFJM99j31uR2fS1dxGBHqihTI
-  bucketName: enc-env-test
+  endpoint:
+  accessKeyId:
+  accessKeySecret:
+  bucketName:
   expiration: 100
-  bucket: https://enc-env-test.oss-cn-shanghai.aliyuncs.com
+  bucket:
 
 
